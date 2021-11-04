@@ -1,0 +1,93 @@
+USE jmurrietasmith_workspace;
+
+DROP TABLE REGISTRATION;
+DROP TABLE SECTION;
+DROP TABLE QUALIFIED;
+DROP TABLE COURSE;
+DROP TABLE FACULTY;
+DROP TABLE STUDENT;
+
+CREATE TABLE STUDENT (
+    StudentID INT NOT NULL,
+    StudentName VARCHAR(25),
+    CONSTRAINT STUDENT_PK PRIMARY KEY (StudentID)
+);
+    
+CREATE TABLE FACULTY (
+    FacultyID INT NOT NULL,
+    FacultyName VARCHAR(25),
+    CONSTRAINT FACULTY_PK PRIMARY KEY (FacultyID)
+);
+    
+CREATE TABLE COURSE (
+    CourseID CHAR(8) NOT NULL,
+    CourseName VARCHAR(15),
+    CONSTRAINT COURSE_PK PRIMARY KEY (CourseID)
+);
+    
+CREATE TABLE QUALIFIED (
+    FacultyID INT NOT NULL,
+    CourseID CHAR(8) NOT NULL,
+    DateQualified DATE,
+    CONSTRAINT QUALIFIED_PK PRIMARY KEY (FacultyID , CourseID),
+    CONSTRAINT QUALIFIED_FK1 FOREIGN KEY (FacultyID)
+        REFERENCES FACULTY (FacultyID),
+    CONSTRAINT QUALIFIED_FK2 FOREIGN KEY (CourseID)
+        REFERENCES COURSE (CourseID)
+);
+    
+CREATE TABLE SECTION (
+    SectionNo INT NOT NULL,
+    Semester VARCHAR(7),
+    CourseID CHAR(8) NOT NULL,
+    CONSTRAINT SECTION_PK PRIMARY KEY (SectionNo),
+    CONSTRAINT Section_FK FOREIGN KEY (CourseID)
+        REFERENCES COURSE (CourseID)
+);
+    
+CREATE TABLE REGISTRATION (
+    StudentID INT NOT NULL,
+    SectionNo INT NOT NULL,
+    CONSTRAINT REGISTRATION_PK PRIMARY KEY (StudentID , SectionNo),
+    CONSTRAINT REGISTRATION_FK1 FOREIGN KEY (StudentID)
+        REFERENCES STUDENT (StudentID),
+    CONSTRAINT REGISTRATION_FK2 FOREIGN KEY (SectionNo)
+        REFERENCES SECTION (SectionNo)
+);
+
+DESCRIBE STUDENT;
+describe COURSE;
+describe FACULTY;
+describe QUALIFIED;
+describe SECTION;
+describe REGISTRATION;
+
+#insert data
+
+#insert data into COURSE table
+INSERT INTO COURSE (CourseID, CourseName) 
+VALUES  ('ISM 3113', 'Syst Analysis');
+INSERT INTO COURSE (CourseID, CourseName) 
+VALUES  ('ISM 3112', 'Syst Design');
+INSERT INTO COURSE (CourseID, CourseName) 
+VALUES  ('ISM 4212', 'Database');
+INSERT INTO COURSE (CourseID, CourseName) 
+VALUES  ('ISM 4930', 'Network');
+
+#retrieve data
+SELECT 
+    *
+FROM
+    COURSE;
+
+SELECT 
+    CourseID
+FROM
+    COURSE;
+
+SELECT 
+    *
+FROM
+    COURSE
+WHERE
+    CourseID = 'ISM 4930';
